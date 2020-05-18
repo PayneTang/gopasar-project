@@ -83,7 +83,7 @@ WSGI_APPLICATION = 'gopasarapp.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
-# default by django
+# # Use below database if you want to use sqlite3 in local
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.sqlite3',
@@ -91,7 +91,8 @@ WSGI_APPLICATION = 'gopasarapp.wsgi.application'
 #     }
 # }
 
-# google cloud platform database settings
+# # Use below for google cloud platform database
+# # project actual database = MySQL
 import pymysql  # noqa: 402
 pymysql.version_info = (1, 4, 6, 'final', 0)  # change mysqlclient version
 pymysql.install_as_MySQLdb()
@@ -161,7 +162,7 @@ REST_FRAMEWORK = {
     ),
 }
 
-# Emailing
+# Emailing settings
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True
