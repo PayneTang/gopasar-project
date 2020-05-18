@@ -43,7 +43,6 @@ INSTALLED_APPS = [
     'rest_framework',
     'knox',
     'sslserver',
-    'accounts',
     'users',
     'frontend',
     'marketplace',
