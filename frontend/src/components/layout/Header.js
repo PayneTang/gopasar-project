@@ -1,6 +1,7 @@
 import React from "react";
 
 import { connect } from "react-redux";
+import { logout } from "../../actions/auth";
 
 import { fade, makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
@@ -19,6 +20,7 @@ import NotificationsIcon from "@material-ui/icons/Notifications";
 import MoreIcon from "@material-ui/icons/MoreVert";
 import PropTypes from "prop-types";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import Link from "@material-ui/core/Link";
 
 const useStyles = makeStyles(theme => ({
   grow: {
@@ -85,7 +87,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const Header = props => {
-  console.log(props);
+  console.log(props.user);
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
@@ -106,6 +108,12 @@ const Header = props => {
     handleMobileMenuClose();
   };
 
+  const logoutClicked = () => {
+    setAnchorEl(null);
+    handleMobileMenuClose();
+    props.logout();
+  };
+
   const handleMobileMenuOpen = event => {
     setMobileMoreAnchorEl(event.currentTarget);
   };
@@ -121,8 +129,12 @@ const Header = props => {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      <MenuItem onClick={handleMenuClose}>
+        <Link href="/profile">Profile</Link>
+      </MenuItem>
+      <MenuItem onClick={logoutClicked}>
+        <Link href="#">Log Out</Link>
+      </MenuItem>
     </Menu>
   );
 
@@ -137,32 +149,11 @@ const Header = props => {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <MenuItem>
-        <IconButton aria-label="show 4 new mails" color="inherit">
-          <Badge badgeContent={4} color="secondary">
-            <MailIcon />
-          </Badge>
-        </IconButton>
-        <p>Messages</p>
+      <MenuItem onClick={handleMenuClose}>
+        <Link href="/profile">Profile</Link>
       </MenuItem>
-      <MenuItem>
-        <IconButton aria-label="show 11 new notifications" color="inherit">
-          <Badge badgeContent={11} color="secondary">
-            <NotificationsIcon />
-          </Badge>
-        </IconButton>
-        <p>Notifications</p>
-      </MenuItem>
-      <MenuItem onClick={handleProfileMenuOpen}>
-        <IconButton
-          aria-label="account of current user"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
-          color="inherit"
-        >
-          <AccountCircle />
-        </IconButton>
-        <p>Profile</p>
+      <MenuItem onClick={logoutClicked}>
+        <Link href="#">Log Out</Link>
       </MenuItem>
     </Menu>
   );
@@ -242,7 +233,8 @@ const Header = props => {
 };
 
 Header.propTypes = {
-  user: PropTypes.object
+  user: PropTypes.object,
+  logout: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -250,4 +242,4 @@ const mapStateToProps = state => ({
   user: state.authReducer.user
 });
 
-export default connect(mapStateToProps)(Header);
+export default connect(mapStateToProps, { logout })(Header);

@@ -67,6 +67,9 @@ export const logout = () => (dispatch, getState) => {
     }
   };
 
+  const csrftoken = getCookie("csrftoken");
+  config.headers["X-CSRFToken"] = csrftoken;
+
   if (token) {
     config.headers["Authorization"] = `Token ${token}`;
   }
@@ -230,3 +233,21 @@ export const continueWithFacebook = ({
       }
     });
 };
+
+function getCookie(name) {
+  // Function from django website
+  // https://docs.djangoproject.com/en/3.0/ref/csrf/
+  var cookieValue = null;
+  if (document.cookie && document.cookie !== "") {
+    var cookies = document.cookie.split(";");
+    for (var i = 0; i < cookies.length; i++) {
+      // var cookie = jQuery.trim(cookies[i]);
+      var cookie = cookies[i].trim();
+      if (cookie.substring(0, name.length + 1) === name + "=") {
+        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+        break;
+      }
+    }
+  }
+  return cookieValue;
+}

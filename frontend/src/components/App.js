@@ -6,12 +6,13 @@ import store from "../store";
 import { Provider } from "react-redux";
 import Notification from "./layout/Notification";
 import { loadUser } from "../actions/auth";
-import { error } from "react-notification-system-redux";
+// import { error } from "react-notification-system-redux";
 
 import Login from "./users/Login";
 import Signup from "./users/Signup";
 import Header from "./layout/Header";
 import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
+import Profile from "./users/Profile";
 
 const theme = createMuiTheme({
   palette: {
@@ -40,6 +41,7 @@ const App = () => {
           <Switch>
             <Route path="/login" component={Login} />
             <Route path="/signup" component={Signup} />
+            <Route path="/profile" component={Profile} />
           </Switch>
         </Router>
       </ThemeProvider>

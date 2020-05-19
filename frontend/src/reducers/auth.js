@@ -30,7 +30,6 @@ export default function(state = initialState, action) {
         user: action.payload
       };
     case LOGIN_SUCCESS:
-    case LOGOUT_SUCCESS:
     case REGISTER_SUCCESS:
       localStorage.setItem("token", action.payload.token);
       return {
@@ -40,6 +39,7 @@ export default function(state = initialState, action) {
         isLoading: false
       };
     case LOGIN_FAILED:
+    case LOGOUT_SUCCESS:
     case LOGOUT_FAILED:
       localStorage.removeItem("token");
       return {
