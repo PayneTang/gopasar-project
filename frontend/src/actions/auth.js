@@ -169,7 +169,6 @@ export const continueWithFacebook = ({
     .get("/api/user/check", config)
     .then(res => {
       const resp = res.data;
-      console.log(resp);
       if (!resp.fb_login) {
         dispatch({ type: LOGIN_FAILED });
         dispatch(
@@ -180,7 +179,6 @@ export const continueWithFacebook = ({
         );
       } else {
         // dispatch(success({ title: "Login successful!" }));
-        console.log("user exists, login...");
         axios
           .post(
             "/api/user/login",

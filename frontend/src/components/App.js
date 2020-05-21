@@ -35,8 +35,6 @@ const App = () => {
       <ThemeProvider theme={theme}>
         <Router>
           <Header />
-          <Link to="/login">Log In</Link>
-          <Link to="/signup">Sign Up</Link>
           <Notification />
           <Switch>
             <Route path="/login" component={Login} />

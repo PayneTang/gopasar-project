@@ -10,7 +10,7 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
         # fields = "__all__"
-        fields = ('id', 'email')
+        fields = ('id', 'email', 'fb_login', 'first_name', 'last_name')
         # note: fields all and exclude cannot be set together
 
 

@@ -1,3 +1,5 @@
+from rest_framework.decorators import api_view, permission_classes
+
 from rest_framework.views import APIView
 from rest_framework import generics, permissions
 from rest_framework.response import Response
@@ -8,31 +10,62 @@ from knox.models import AuthToken
 from django.core.mail import EmailMessage
 
 
-class UserAPI(generics.RetrieveAPIView):
-    permission_classes = [
-        permissions.IsAuthenticated,
-    ]
-    serializer_class = UserSerializer
+# Retrieve user from token
+@api_view(['GET', ])
+@permission_classes([permissions.IsAuthenticated])
+def retrieve_user(request):
+    serializer = UserSerializer(request.user)
+    return Response(serializer.data)
 
-    def get_object(self):
-        return self.request.user
+# GET
+@api_view(['GET', ])
+@permission_classes([permissions.IsAuthenticated])
+def get_user(request):
+    try:
+        user = CustomUser.objects.get(id=pk)
+    except CustomUser.DoesNotExist:
+        return Response({"error": "user not found"})
 
-
-class CheckUserAPI(APIView):
-    def get(self, request):
-        email = request.query_params['email']
-        user = CustomUser.objects.filter(email=email)
-        if user:
-            return Response({"email": user[0].email, "fb_login": user[0].fb_login})
-        else:
-            return Response(status=404)
-
-
-class UserListAPI(generics.ListAPIView):
-    queryset = CustomUser.objects.all()
-    serializer_class = UserSerializer
+    serializer = UserSerializer(user)
+    return Response(serializer.data)
 
 
+# GET ALL
+@api_view(['GET'])
+def list_all_users(request):
+    users = CustomUser.objects.all()
+    serializer = UserSerializer(users, many=True)
+    return Response(serializer.data)
+
+
+@api_view(['GET'])
+def check_user(request):
+    email = request.query_params['email']
+    user = CustomUser.objects.filter(email=email)
+    print(user)
+    if user:
+        return Response({"email": user[0].email, "fb_login": user[0].fb_login})
+    else:
+        return Response(status=404)
+
+
+# UPDATE
+@api_view(['PUT'])
+@permission_classes([permissions.IsAuthenticated])
+def update_user(request, pk):
+    try:
+        user = CustomUser.objects.get(id=pk)
+    except CustomUser.DoesNotExist:
+        return Response({"error": "user not found"})
+
+    serializer = UserSerializer(instance=user, data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+
+    return Response(serializer.data)
+
+
+# REGISTER
 class RegisterAPI(generics.GenericAPIView):
     serializer_class = RegisterSerializer
 
@@ -46,6 +79,7 @@ class RegisterAPI(generics.GenericAPIView):
         })
 
 
+# LOGIN
 class LoginAPI(generics.GenericAPIView):
     serializer_class = LoginSerializer
 

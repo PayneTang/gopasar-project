@@ -119,7 +119,7 @@ const Header = props => {
   };
 
   const menuId = "primary-search-account-menu";
-  const renderMenu = (
+  const renderMenu = props.user ? (
     <Menu
       anchorEl={anchorEl}
       anchorOrigin={{ vertical: "top", horizontal: "right" }}
@@ -136,10 +136,27 @@ const Header = props => {
         <Link href="#">Log Out</Link>
       </MenuItem>
     </Menu>
+  ) : (
+    <Menu
+      anchorEl={anchorEl}
+      anchorOrigin={{ vertical: "top", horizontal: "right" }}
+      id={menuId}
+      keepMounted
+      transformOrigin={{ vertical: "top", horizontal: "right" }}
+      open={isMenuOpen}
+      onClose={handleMenuClose}
+    >
+      <MenuItem onClick={handleMenuClose}>
+        <Link href="/login">Log In</Link>
+      </MenuItem>
+      <MenuItem onClick={logoutClicked}>
+        <Link href="/signup">Sign Up</Link>
+      </MenuItem>
+    </Menu>
   );
 
   const mobileMenuId = "primary-search-account-menu-mobile";
-  const renderMobileMenu = (
+  const renderMobileMenu = props.user ? (
     <Menu
       anchorEl={mobileMoreAnchorEl}
       anchorOrigin={{ vertical: "top", horizontal: "right" }}
@@ -154,6 +171,23 @@ const Header = props => {
       </MenuItem>
       <MenuItem onClick={logoutClicked}>
         <Link href="#">Log Out</Link>
+      </MenuItem>
+    </Menu>
+  ) : (
+    <Menu
+      anchorEl={mobileMoreAnchorEl}
+      anchorOrigin={{ vertical: "top", horizontal: "right" }}
+      id={mobileMenuId}
+      keepMounted
+      transformOrigin={{ vertical: "top", horizontal: "right" }}
+      open={isMobileMenuOpen}
+      onClose={handleMobileMenuClose}
+    >
+      <MenuItem onClick={handleMenuClose}>
+        <Link href="/login">Log In</Link>
+      </MenuItem>
+      <MenuItem onClick={logoutClicked}>
+        <Link href="/signup">Sign Up</Link>
       </MenuItem>
     </Menu>
   );
@@ -171,7 +205,7 @@ const Header = props => {
             <MenuIcon />
           </IconButton>
           <Typography className={classes.title} variant="h6" noWrap>
-            Material-UI
+            GoPasar
           </Typography>
           <div className={classes.search}>
             <div className={classes.searchIcon}>
