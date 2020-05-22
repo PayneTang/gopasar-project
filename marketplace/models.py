@@ -5,15 +5,11 @@ from users.models import CustomUser
 
 
 class Product(models.Model):
-    name = models.CharField(max_length=100, null=True)
+    name = models.CharField(max_length=100)
     price = models.FloatField()
     description = models.TextField()
     seller = models.ForeignKey(
         CustomUser, on_delete=models.SET_NULL, null=True, blank=True)
-    delivery_option = models.CharField(max_length=50, choices=(
-        ("SELF_COLLECTION", "Self collect"),
-        ("DELIVERY", "Delivery")
-    ))
 
     def __str__(self):
         return self.name

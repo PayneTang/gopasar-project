@@ -13,12 +13,16 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from django.conf import settings
+from django.conf.urls.static import static
+
 from django.contrib import admin
 from django.urls import path, re_path, include
 from frontend.views import index
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('api/marketplace/', include('marketplace.urls')),
     path('api/', include('users.urls')),
-    re_path(r'^(?:.*)/?$', index),  # redirect everything else to frontend
-]
+    re_path(r'^app(?:.*)/?$', index),  # redirect everything else to frontend
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
