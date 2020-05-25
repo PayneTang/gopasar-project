@@ -12,7 +12,7 @@ This project is building an e-commerce web application, the main product domain 
 | Django REST Framework | REST API | [https://www.django-rest-framework.org/](https://www.django-rest-framework.org/) |
 | MySQL | Database | [https://dev.mysql.com/doc/](https://dev.mysql.com/doc/) |
 | Google Cloud Platform | App hosting and cloud database | [https://cloud.google.com/docs](https://cloud.google.com/docs) |
-| Google Cloud Storage | Storing static and uploaded files | [https://cloud.google.com/storage/docs] (https://cloud.google.com/storage/docs)
+| Google Cloud Storage | Storing static and uploaded files | https://cloud.google.com/storage/docs
 
 ## Project folder structure
 ```
