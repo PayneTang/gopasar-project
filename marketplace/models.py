@@ -1,13 +1,19 @@
+import sys
+import os
+from io import BytesIO
 from django.db import models
 from users.models import CustomUser
+from PIL import Image
+from django.core.files.uploadedfile import InMemoryUploadedFile
+from common.utils import get_upload_destination
 
 # Create your models here.
 
 
 class Product(models.Model):
     name = models.CharField(max_length=100)
-    price = models.FloatField()
-    description = models.TextField()
+    price = models.FloatField(null=True, blank=True)
+    description = models.TextField(null=True, blank=True)
     seller = models.ForeignKey(
         CustomUser, on_delete=models.SET_NULL, null=True, blank=True)
 
@@ -40,3 +46,33 @@ class ShippingAddress(models.Model):
         CustomUser, on_delete=models.SET_NULL, blank=True, null=True)
     order = models.ForeignKey(
         Order, on_delete=models.SET_NULL, blank=True, null=True)
+
+
+class ProductImage(models.Model):
+    product = models.ForeignKey(
+        Product, related_name='images', on_delete=models.CASCADE)
+    # product = models.CharField(max_length=200, null=True, blank=True)
+    image = models.ImageField(
+        upload_to=get_upload_destination)
+
+    def __str__(self):
+        return str(self.image.url)
+
+    def save(self, *args, **kwargs):
+        self.image = self.resize_image(self.image)
+        super().save(*args, **kwargs)
+
+    def resize_image(self, uploaded_image):
+        img = Image.open(self.image)
+        output_io_stream = BytesIO()
+        resized_img = img.thumbnail((1000, 1000), Image.ANTIALIAS)
+        img.save(output_io_stream, "JPEG", quality=90)
+        output_io_stream.seek(0)
+        uploaded_image = InMemoryUploadedFile(
+            output_io_stream,
+            'ImageField',
+            '%s.jpg' % uploaded_image.name.split('.')[0],
+            'image/jpeg',
+            output_io_stream.getbuffer().nbytes,
+            None)
+        return uploaded_image

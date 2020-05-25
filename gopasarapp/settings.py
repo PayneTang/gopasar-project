@@ -184,19 +184,31 @@ USE_L10N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/3.0/howto/static-files/
+# Static and media files
+PROJECT_ROOT = os.path.join(os.path.dirname(
+    os.path.abspath(__file__)), os.pardir)
 
-STATIC_URL = '/static/'
+DEFAULT_FILE_STORAGE = 'gcloud.GoogleCloudMediaFileStorage'
+STATICFILES_STORAGE = 'gcloud.GoogleCloudStaticFileStorage'
 
-STATIC_ROOT = 'static'
+# GS_PROJECT_ID = 'PROJECT ID FOUND IN GOOGLE CLOUD'
+GS_BUCKET_NAME = os.getenv('GOOGLE_CLOUD_STORAGE_BUCKET_NAME')
+GS_STATIC_BUCKET_NAME = os.getenv('GOOGLE_CLOUD_STORAGE_BUCKET_NAME')
+GS_MEDIA_BUCKET_NAME = os.getenv('GOOGLE_CLOUD_STORAGE_BUCKET_NAME')
 
-# MEDIA_ROOT = os.path.abspath(os.path.dirname(__name__))
+# STATIC
+# The path to the directory where ./manage.py collectstatic will collect static files for deployment
+STATIC_ROOT = "static/"
 
-# MEDIA_URL = os.path.abspath(os.path.dirname(__name__)) + '/'
+STATIC_URL = 'https://storage.googleapis.com/{}/static/'.format(
+    GS_STATIC_BUCKET_NAME)
 
-# Base url to serve media files
-MEDIA_URL = '/media/'
+# MEDIA
+# The path on the filesystem to the directory containing the static media
+# MEDIA_ROOT = "media/"
+MEDIA_ROOT = 'https://storage.googleapis.com/{}/media/'.format(
+    GS_MEDIA_BUCKET_NAME)
 
-# Path where media is stored
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+# The URL that makes the static media accessible over HTTP
+MEDIA_URL = 'https://storage.googleapis.com/{}/media/'.format(
+    GS_MEDIA_BUCKET_NAME)

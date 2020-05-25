@@ -3,7 +3,7 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.views import APIView
 from rest_framework import generics, permissions
 from rest_framework.response import Response
-from .serializers import UserSerializer, LoginSerializer, RegisterSerializer
+from .serializers import UserSerializer, UpdateUserSerializer, LoginSerializer, RegisterSerializer
 from .models import CustomUser
 from knox.models import AuthToken
 
@@ -42,7 +42,7 @@ def list_all_users(request):
 def check_user(request):
     email = request.query_params['email']
     user = CustomUser.objects.filter(email=email)
-    print(user)
+    # print(user)
     if user:
         return Response({"email": user[0].email, "fb_login": user[0].fb_login})
     else:
@@ -52,17 +52,21 @@ def check_user(request):
 # UPDATE
 @api_view(['PUT'])
 @permission_classes([permissions.IsAuthenticated])
-def update_user(request, pk):
-    try:
-        user = CustomUser.objects.get(id=pk)
-    except CustomUser.DoesNotExist:
-        return Response({"error": "user not found"})
+def update_user(request):
+    user = request.user
+    # try:
+    #     user = CustomUser.objects.get(id=pk)
+    # except CustomUser.DoesNotExist:
+    #     return Response({"error": "user not found"})
 
-    serializer = UserSerializer(instance=user, data=request.data)
+    serializer = UpdateUserSerializer(user, data=request.data)
+    # print(serializer.instance)
     if serializer.is_valid():
         serializer.save()
-
-    return Response(serializer.data)
+        output = UserSerializer(user)
+        return Response(output.data)  # return updated
+    else:
+        return Response(serializer.errors)
 
 
 # REGISTER

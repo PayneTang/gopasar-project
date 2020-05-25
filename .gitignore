@@ -1,3 +1,6 @@
+test_data
+gopasar*json
+
 .env
 cloud_sql_cmd.txt
 cloud_sql_proxy

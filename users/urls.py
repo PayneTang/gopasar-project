@@ -12,7 +12,7 @@ urlpatterns = [
 
     path('user/all', list_all_users),
     path('user/check', check_user),
-    path('user/update/<str:pk>', update_user),
+    path('user/update', update_user),
     path('user/<str:pk>', get_user),
     path('user/', retrieve_user),
 ]
