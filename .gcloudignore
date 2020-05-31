@@ -29,3 +29,6 @@ src/
 
 # Media files for test
 media/
+
+# project files
+gcp_cmds.py

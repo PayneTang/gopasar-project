@@ -20,6 +20,7 @@ import PropTypes from "prop-types";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
 const useStyles = makeStyles(theme => ({
+  mainGradient: theme.palette.primary.mainGradient,
   grow: {
     flexGrow: 1
   },
@@ -191,7 +192,13 @@ const Header = props => {
 
   return (
     <div className={classes.grow}>
-      <AppBar position="static">
+      <AppBar
+        position="static"
+        style={{
+          background:
+            "linear-gradient(176.73deg, #2C76A6 -33.21%, #2FB14B 104.1%)"
+        }}
+      >
         <Toolbar>
           <IconButton
             edge="start"

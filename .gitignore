@@ -1,5 +1,6 @@
 test_data
 gopasar*json
+gcp_cmds.py
 
 .env
 cloud_sql_cmd.txt
