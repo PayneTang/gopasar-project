@@ -70,8 +70,7 @@ const Signup = props => {
       last_name: lastname,
       email,
       password,
-      confirmPassword,
-      fb_login: "false"
+      confirmPassword
     };
 
     props.register(body);

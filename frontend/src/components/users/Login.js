@@ -19,6 +19,7 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import Facebook from "./Facebook";
+import Google from "./Google";
 import { Divider } from "@material-ui/core";
 
 function Copyright() {
@@ -58,6 +59,10 @@ const useStyles = makeStyles(theme => ({
   facebook: {
     backgroundColor: theme.palette.primary.dark,
     margin: theme.spacing(3, 0, 2)
+  },
+  google: {
+    backgroundColor: "white",
+    margin: theme.spacing(3, 0, 2)
   }
 }));
 
@@ -69,7 +74,7 @@ const Login = props => {
   const onSubmit = e => {
     e.preventDefault();
 
-    props.login(email, password, "false");
+    props.login(email, password);
   };
 
   return (
@@ -132,6 +137,7 @@ const Login = props => {
           <Divider />
 
           <Facebook classes={classes.facebook} />
+          <Google classes={classes.google} />
           <Grid container>
             <Grid item xs>
               <Link href="#" variant="body2">

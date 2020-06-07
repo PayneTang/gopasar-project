@@ -35,14 +35,14 @@ export const loadUser = () => (dispatch, getState) => {
     });
 };
 
-export const login = (email, password, fb_login) => dispatch => {
+export const login = (email, password) => dispatch => {
   const config = {
     headers: {
       "Content-Type": "application/json"
     }
   };
 
-  const body = { email, password, fb_login };
+  const body = { email, password };
 
   axios
     .post("/api/user/login", body, config)
@@ -54,7 +54,7 @@ export const login = (email, password, fb_login) => dispatch => {
       });
     })
     .catch(err => {
-      dispatch(error({ title: "Login failed!" }));
+      dispatch(error({ title: err.response.data.message }));
       dispatch({ type: LOGIN_FAILED });
     });
 };
@@ -108,7 +108,6 @@ export const register = ({
   email,
   password,
   confirmPassword,
-  fb_login,
   first_name,
   last_name
 }) => dispatch => {
@@ -132,7 +131,7 @@ export const register = ({
     return null;
   }
 
-  const body = { email, password, fb_login, first_name, last_name };
+  const body = { email, password, first_name, last_name };
 
   axios
     .post("/api/user/register", body, config)
@@ -149,10 +148,11 @@ export const register = ({
     });
 };
 
-export const continueWithFacebook = ({
+export const socialLogin = ({
   email,
   first_name,
-  last_name
+  last_name,
+  method
 }) => dispatch => {
   // 1. Check if user exists api/user/check
   // 2. If not exist, register
@@ -169,12 +169,11 @@ export const continueWithFacebook = ({
     .get("/api/user/check", config)
     .then(res => {
       const resp = res.data;
-      if (!resp.fb_login) {
+      if (!resp[method]) {
         dispatch({ type: LOGIN_FAILED });
         dispatch(
           error({
-            title:
-              "The email has been registered to another account, please log in directly!"
+            title: "The email has been registered to another login method!"
           })
         );
       } else {
@@ -185,7 +184,7 @@ export const continueWithFacebook = ({
             {
               email: resp.email,
               password: resp.email,
-              fb_login: "true"
+              [method]: true
             },
             { "Content-Type": "application/json" }
           )
@@ -197,7 +196,7 @@ export const continueWithFacebook = ({
             });
           })
           .catch(err => {
-            dispatch(error({ title: "Login failed!" }));
+            dispatch(error({ title: err.response.data.message }));
             dispatch({ type: LOGIN_FAILED });
           });
       }
@@ -210,7 +209,7 @@ export const continueWithFacebook = ({
             {
               email,
               password: email,
-              fb_login: "true",
+              [method]: "true",
               first_name,
               last_name
             },

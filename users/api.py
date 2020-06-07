@@ -44,7 +44,7 @@ def check_user(request):
     user = CustomUser.objects.filter(email=email)
     # print(user)
     if user:
-        return Response({"email": user[0].email, "fb_login": user[0].fb_login})
+        return Response({"email": user[0].email, "fb_login": user[0].fb_login, "google_login": user[0].google_login})
     else:
         return Response(status=404)
 

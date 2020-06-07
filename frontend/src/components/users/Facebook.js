@@ -3,12 +3,13 @@ import FacebookLogin from "react-facebook-login/dist/facebook-login-render-props
 import Button from "@material-ui/core/Button";
 import FacebookIcon from "@material-ui/icons/Facebook";
 import { connect } from "react-redux";
-import { login, continueWithFacebook } from "../../actions/auth";
+import { socialLogin } from "../../actions/auth";
+import Typography from "@material-ui/core/Typography";
 
 const Facebook = props => {
   const responseFacebook = response => {
     const { email, first_name, last_name } = response;
-    props.continueWithFacebook({ email, first_name, last_name });
+    props.socialLogin({ email, first_name, last_name, method: "facebook" });
   };
 
   return (
@@ -27,7 +28,8 @@ const Facebook = props => {
             className={props.classes}
             onClick={renderProps.onClick}
           >
-            <FacebookIcon /> Continue with Facebook
+            <FacebookIcon style={{ marginLeft: "10px", marginRight: "10px" }} />
+            <Typography>Continue with Facebook</Typography>
           </Button>
         )}
       />
@@ -35,4 +37,4 @@ const Facebook = props => {
   );
 };
 
-export default connect(null, { login, continueWithFacebook })(Facebook);
+export default connect(null, { socialLogin })(Facebook);
