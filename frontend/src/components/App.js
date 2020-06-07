@@ -31,6 +31,15 @@ const theme = createMuiTheme({
       contrastText: "#fff",
       mainGradient: "linear-gradient(to right, tomato, cyan)"
     }
+  },
+  typography: {
+    fontFamily: '"Comfortaa", "Roboto", "Helvetica"',
+    button: {
+      textTransform: "none"
+    }
+  },
+  link: {
+    textDecoration: "none"
   }
 });
 
@@ -43,23 +52,22 @@ const App = () => {
     <Provider store={store}>
       <ThemeProvider theme={theme}>
         <Router basename="/app">
-          {/* <Grid maxWidth="md"> */}
-          <Grid
+          {/* <Grid
             container
             direction="column"
             justify="center"
             alignItems="center"
-          >
-            <Header />
-            <Notification />
-            <Switch>
-              <Route path="/login" component={Login} />
-              <Route path="/signup" component={Signup} />
-              <Route path="/profile" component={Profile} />
-              <Route path="/" component={Homepage} />
-              <Redirect to="/" />
-            </Switch>
-          </Grid>
+          > */}
+          <Header />
+          <Notification />
+          <Switch>
+            <Route path="/login" component={Login} />
+            <Route path="/signup" component={Signup} />
+            <Route path="/profile" component={Profile} />
+            <Route path="/" component={Homepage} />
+            <Redirect to="/" />
+          </Switch>
+          {/* </Grid> */}
         </Router>
       </ThemeProvider>
     </Provider>
