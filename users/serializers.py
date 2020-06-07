@@ -10,7 +10,7 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
         # fields = "__all__"
-        fields = ('id', 'email', 'fb_login', 'first_name', 'last_name')
+        fields = ('id', 'email', 'first_name', 'last_name')
         # note: fields all and exclude cannot be set together
 
 
@@ -37,7 +37,7 @@ class RegisterSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
         fields = ('id', 'email', 'password',
-                  'fb_login', 'first_name', 'last_name')
+                  'fb_login', 'google_login', 'first_name', 'last_name')
         extra_kwargs = {'password': {'write_only': True}}
 
     def create(self, validated_data):
@@ -72,7 +72,8 @@ class LoginSerializer(serializers.Serializer):
     # Pending learn authenticate using email and password
     email = serializers.CharField()
     password = serializers.CharField()
-    fb_login = serializers.BooleanField()
+    # fb_login = serializers.BooleanField()
+    # google_login = serializers.BooleanField()
 
     def validate(self, data):
         # print(data)

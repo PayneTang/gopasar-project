@@ -92,18 +92,26 @@ class LoginAPI(generics.GenericAPIView):
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data
 
-        # Custom: check if the user logged with FB
-        if request.data["fb_login"].lower() == "true":
-            request_fb_login = True
-        else:
-            request_fb_login = False
+        # Custom: Check FB and Google login status, return unauthorized if invalid
+        social_login = {'fb_login': False, 'google_login': False}
+
+        for method in social_login.keys():
+            try:
+                if request.data[method]:
+                    social_login[method] = True
+            except KeyError:
+                pass
 
         if user.fb_login:
-            # Pre-process fb_login to boolean
-            if not request_fb_login:
+            if not social_login['fb_login']:
                 return Response({'message': "This email logged in with Facebook, please try log in with Facebook!"}, status=401)
-        else:
-            if request_fb_login:
+
+        if user.google_login:
+            if not social_login['google_login']:
+                return Response({'message': "This email logged in with Google, please try log in with Google!"}, status=401)
+
+        if any(social_login.values()):
+            if not user.fb_login and not user.google_login:
                 return Response({"message": "This email has been registered, please log in with the email directly!"}, status=401)
 
         return Response({
