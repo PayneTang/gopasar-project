@@ -9,7 +9,7 @@ import Typography from "@material-ui/core/Typography";
 const Facebook = props => {
   const responseFacebook = response => {
     const { email, first_name, last_name } = response;
-    props.socialLogin({ email, first_name, last_name, method: "facebook" });
+    props.socialLogin({ email, first_name, last_name, method: "fb_login" });
   };
 
   return (
