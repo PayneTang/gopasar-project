@@ -5,7 +5,7 @@ from django.db import models
 from users.models import CustomUser
 from PIL import Image
 from django.core.files.uploadedfile import InMemoryUploadedFile
-from common.utils import get_upload_destination
+from common.utils import get_product_upload_destination
 
 # Create your models here.
 
@@ -53,7 +53,7 @@ class ProductImage(models.Model):
         Product, related_name='images', on_delete=models.CASCADE)
     # product = models.CharField(max_length=200, null=True, blank=True)
     image = models.ImageField(
-        upload_to=get_upload_destination)
+        upload_to=get_product_upload_destination)
 
     def __str__(self):
         return str(self.image.url)

@@ -1,5 +1,5 @@
 from rest_framework.decorators import api_view, permission_classes
-
+from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.views import APIView
 from rest_framework import generics, permissions
 from rest_framework.response import Response
@@ -9,6 +9,7 @@ from knox.models import AuthToken
 
 from django.core.mail import EmailMessage
 
+from common.utils import blob_exists, retrieve_upload_relative_path, delete_blob
 
 # Retrieve user from token
 @api_view(['GET', ])
@@ -20,7 +21,7 @@ def retrieve_user(request):
 # GET
 @api_view(['GET', ])
 @permission_classes([permissions.IsAuthenticated])
-def get_user(request):
+def get_user(request, pk):
     try:
         user = CustomUser.objects.get(id=pk)
     except CustomUser.DoesNotExist:
@@ -49,24 +50,43 @@ def check_user(request):
         return Response(status=404)
 
 
-# UPDATE
-@api_view(['PUT'])
-@permission_classes([permissions.IsAuthenticated])
-def update_user(request):
-    user = request.user
-    # try:
-    #     user = CustomUser.objects.get(id=pk)
-    # except CustomUser.DoesNotExist:
-    #     return Response({"error": "user not found"})
+class UpdateUserAPI(generics.GenericAPIView):
+    parser_classes = [FormParser, MultiPartParser]
+    permission_classes = [permissions.IsAuthenticated]
 
-    serializer = UpdateUserSerializer(user, data=request.data)
-    # print(serializer.instance)
-    if serializer.is_valid():
-        serializer.save()
-        output = UserSerializer(user)
-        return Response(output.data)  # return updated
-    else:
-        return Response(serializer.errors)
+    def put(self, request):
+        """
+        When there is image upload in request data, and user already has avatar image
+        will remove existing image before upload the new one
+        """
+        user = request.user
+        if request.data['avatar'] and user.avatar:
+            blob_path = retrieve_upload_relative_path(user.avatar.url)
+            if blob_exists(blob_path):
+                delete_blob(blob_path)
+        serializer = UpdateUserSerializer(user, data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            output = UserSerializer(user)
+            return Response(output.data)
+        else:
+            return Response(serializer.errors)
+# @api_view(['PUT'])
+# def update_user(request):
+#     user = request.user
+#     # try:
+#     #     user = CustomUser.objects.get(id=pk)
+#     # except CustomUser.DoesNotExist:
+#     #     return Response({"error": "user not found"})
+
+#     serializer = UpdateUserSerializer(user, data=request.data)
+#     # print(serializer.instance)
+#     if serializer.is_valid():
+#         serializer.save()
+#         output = UserSerializer(user)
+#         return Response(output.data)  # return updated
+#     else:
+#         return Response(serializer.errors)
 
 
 # REGISTER

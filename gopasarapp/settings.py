@@ -188,37 +188,40 @@ USE_TZ = True
 PROJECT_ROOT = os.path.join(os.path.dirname(
     os.path.abspath(__file__)), os.pardir)
 
-if os.getenv('ENVIRONMENT') == 'development':
-    DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
+# --- development and deployment servers share same storage
+# if os.getenv('ENVIRONMENT') == 'development':
+#     DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
 
-    STATIC_ROOT = 'static/'
-    STATIC_URL = '/static/'
+#     STATIC_ROOT = 'static/'
+#     STATIC_URL = '/static/'
 
-    MEDIA_ROOT = 'media'
-    MEDIA_URL = 'media/'
-else:
-    # production in google cloud
-    DEFAULT_FILE_STORAGE = 'gcloud.GoogleCloudMediaFileStorage'
-    STATICFILES_STORAGE = 'gcloud.GoogleCloudStaticFileStorage'
+#     MEDIA_ROOT = 'media'
+#     MEDIA_URL = 'media/'
+# else:
+# --- development and deployment servers share same storage
 
-    # GS_PROJECT_ID = 'PROJECT ID FOUND IN GOOGLE CLOUD'
-    GS_BUCKET_NAME = os.getenv('GOOGLE_CLOUD_STORAGE_BUCKET_NAME')
-    GS_STATIC_BUCKET_NAME = os.getenv('GOOGLE_CLOUD_STORAGE_BUCKET_NAME')
-    GS_MEDIA_BUCKET_NAME = os.getenv('GOOGLE_CLOUD_STORAGE_BUCKET_NAME')
+# production in google cloud
+DEFAULT_FILE_STORAGE = 'gcloud.GoogleCloudMediaFileStorage'
+STATICFILES_STORAGE = 'gcloud.GoogleCloudStaticFileStorage'
 
-    # STATIC
-    # The path to the directory where ./manage.py collectstatic will collect static files for deployment
-    STATIC_ROOT = "static/"
+# GS_PROJECT_ID = 'PROJECT ID FOUND IN GOOGLE CLOUD'
+GS_BUCKET_NAME = os.getenv('GOOGLE_CLOUD_STORAGE_BUCKET_NAME')
+GS_STATIC_BUCKET_NAME = os.getenv('GOOGLE_CLOUD_STORAGE_BUCKET_NAME')
+GS_MEDIA_BUCKET_NAME = os.getenv('GOOGLE_CLOUD_STORAGE_BUCKET_NAME')
 
-    STATIC_URL = 'https://storage.googleapis.com/{}/static/'.format(
-        GS_STATIC_BUCKET_NAME)
+# STATIC
+# The path to the directory where ./manage.py collectstatic will collect static files for deployment
+STATIC_ROOT = "static/"
 
-    # MEDIA
-    # The path on the filesystem to the directory containing the static media
-    # MEDIA_ROOT = "media/"
-    MEDIA_ROOT = 'https://storage.googleapis.com/{}/media/'.format(
-        GS_MEDIA_BUCKET_NAME)
+STATIC_URL = 'https://storage.googleapis.com/{}/static/'.format(
+    GS_STATIC_BUCKET_NAME)
 
-    # The URL that makes the static media accessible over HTTP
-    MEDIA_URL = 'https://storage.googleapis.com/{}/media/'.format(
-        GS_MEDIA_BUCKET_NAME)
+# MEDIA
+# The path on the filesystem to the directory containing the static media
+# MEDIA_ROOT = "media/"
+MEDIA_ROOT = 'https://storage.googleapis.com/{}/'.format(
+    GS_MEDIA_BUCKET_NAME)
+
+# The URL that makes the static media accessible over HTTP
+MEDIA_URL = 'https://storage.googleapis.com/{}/'.format(
+    GS_MEDIA_BUCKET_NAME)

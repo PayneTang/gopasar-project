@@ -37,16 +37,16 @@ class CreateProductSerializer(serializers.ModelSerializer):
 
 
 class ProductImageSerializer(serializers.ModelSerializer):
-    url = serializers.SerializerMethodField()
+    # url = serializers.SerializerMethodField()
 
     class Meta:
         model = ProductImage
         fields = '__all__'
 
-    def get_url(self, obj):
-        request = self.context.get('request')
-        url = obj.image.url
-        return request.build_absolute_uri(url)
+    # def get_url(self, obj):
+    #     request = self.context.get('request')
+    #     url = obj.image.url
+    #     return request.build_absolute_uri(url)
 
 
 class ProductImageRetrieveSerializer(serializers.ModelSerializer):

@@ -1,5 +1,5 @@
 from django.urls import path, include
-from .api import LoginAPI, RegisterAPI, get_user, update_user, list_all_users, retrieve_user, check_user
+from .api import LoginAPI, RegisterAPI, get_user, UpdateUserAPI, list_all_users, retrieve_user, check_user
 from knox import views as knox_views
 
 urlpatterns = [
@@ -12,7 +12,7 @@ urlpatterns = [
 
     path('user/all', list_all_users),
     path('user/check', check_user),
-    path('user/update', update_user),
+    path('user/update', UpdateUserAPI.as_view()),
     path('user/<str:pk>', get_user),
     path('user/', retrieve_user),
 ]

@@ -14,6 +14,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='productimage',
             name='image',
-            field=models.ImageField(upload_to=common.utils.get_upload_destination),
+            field=models.ImageField(
+                upload_to=common.utils.get_product_upload_destination),
         ),
     ]

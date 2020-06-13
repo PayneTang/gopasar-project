@@ -10,7 +10,7 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
         # fields = "__all__"
-        fields = ('id', 'email', 'first_name', 'last_name')
+        fields = ('id', 'email', 'first_name', 'last_name', 'avatar')
         # note: fields all and exclude cannot be set together
 
 
@@ -18,19 +18,22 @@ class UpdateUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
         # fields = "__all__"
-        fields = ('first_name', 'last_name')
+        fields = ('first_name', 'last_name', 'avatar')
         # note: fields all and exclude cannot be set together
 
-    def update(self, instance, validated_data):
-        # print('update called')
-        # print(instance)
-        instance.email = validated_data.get('email', instance.email)
-        instance.first_name = validated_data.get(
-            'first_name', instance.first_name)
-        instance.last_name = validated_data.get(
-            'last_name', instance.last_name)
-        instance.save()
-        return instance
+    # def update(self, instance, validated_data):
+    #     # print('update called')
+    #     # print(instance)
+    #     instance.email = validated_data.get('email', instance.email)
+    #     instance.first_name = validated_data.get(
+    #         'first_name', instance.first_name)
+    #     instance.last_name = validated_data.get(
+    #         'last_name', instance.last_name)
+    #     print(validated_data)
+    #     print(validated_data.get('avatar').url)
+    #     # instance.avatar = validated_data.get('avatar')
+    #     instance.save()
+    #     return instance
 
 
 class RegisterSerializer(serializers.ModelSerializer):
