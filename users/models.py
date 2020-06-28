@@ -14,6 +14,7 @@ class CustomUser(AbstractUser):
     google_login = models.BooleanField(default=False)
     phone_number = models.IntegerField(null=True)
     date_of_birth = models.DateField(null=True)
+    description = models.TextField(null=True)
     avatar = models.ImageField(
         upload_to=get_avatar_upload_destination, null=True)
 

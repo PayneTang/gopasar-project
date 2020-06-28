@@ -60,7 +60,8 @@ class UpdateUserAPI(generics.GenericAPIView):
         will remove existing image before upload the new one
         """
         user = request.user
-        if request.data['avatar'] and user.avatar:
+        avatar = request.data.get('avatar', None)
+        if avatar and user.avatar:
             blob_path = retrieve_upload_relative_path(user.avatar.url)
             if blob_exists(blob_path):
                 delete_blob(blob_path)

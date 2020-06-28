@@ -3,7 +3,7 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Redirect
+  Redirect,
 } from "react-router-dom";
 
 // Redux
@@ -22,25 +22,36 @@ import Homepage from "./Homepage";
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 
+// go pasar theme:
+// section header: fontFamily Comfortaa, otherwise Roboto
+// primary, secondary, warning, common colors defined
+// gopasar custom gradient defined
+// Font sizing: title 20px, body 12px, body2 10px, extension 14px
 const theme = createMuiTheme({
   palette: {
-    primary: {
-      light: "#757ce8",
-      main: "#2FB14B",
-      dark: "#2C76A6",
-      contrastText: "#fff",
-      mainGradient: "linear-gradient(to right, tomato, cyan)"
-    }
+    primary: { main: "#2C76A6" },
+    secondary: { main: "#2FB14B" },
+    warning: { main: "#FFA800" },
+    common: { black: "#000", white: "#fff", grey: "#ccc" },
+    gradient: {
+      main: "linear-gradient(176.73deg, #2C76A6 -33.21%, #2FB14B 104.1%)",
+    },
   },
   typography: {
-    fontFamily: '"Comfortaa", "Roboto", "Helvetica"',
+    fontFamily: '"Roboto", "Helvetica"',
     button: {
-      textTransform: "none"
-    }
+      textTransform: "none",
+    },
   },
   link: {
-    textDecoration: "none"
-  }
+    textDecoration: "none",
+  },
+  header: { fontFamily: "Comfortaa" },
+  gopasarSectionHeader: {
+    fontFamily: "Menlo",
+    color: "#fff",
+    background: "linear-gradient(176.73deg, #2C76A6 -33.21%, #2FB14B 104.1%)",
+  },
 });
 
 const App = () => {

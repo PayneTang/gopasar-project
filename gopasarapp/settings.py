@@ -225,3 +225,8 @@ MEDIA_ROOT = 'https://storage.googleapis.com/{}/'.format(
 # The URL that makes the static media accessible over HTTP
 MEDIA_URL = 'https://storage.googleapis.com/{}/'.format(
     GS_MEDIA_BUCKET_NAME)
+
+# Use local static when development, mainly for frontend
+if os.getenv('ENVIRONMENT') == 'development':
+    STATIC_ROOT = 'static/'
+    STATIC_URL = '/static/'

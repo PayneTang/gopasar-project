@@ -1,4 +1,5 @@
 import React from "react";
+import { useLocation } from "react-router-dom";
 import logo from "../../assets/Logo.svg";
 
 import { connect } from "react-redux";
@@ -10,70 +11,105 @@ import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
 import PropTypes from "prop-types";
-import { mainGradient } from "../../styles/mainGradient";
 import Button from "@material-ui/core/Button";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import SidebarMenu from "../SidebarMenu";
 import { Link } from "react-router-dom";
 import SearchBar from "../SearchBar";
+import AccountCircleIcon from "@material-ui/icons/AccountCircle";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
+  root: {
+    background: theme.palette.gradient.main,
+  },
   iconButton: {
-    color: "white"
+    color: "white",
   },
   logoIcon: {
-    margin: theme.spacing(1)
+    margin: theme.spacing(1),
   },
   title: {
-    flexGrow: 1
+    flexGrow: 1,
   },
   signInButton: {
-    fontSize: "12px"
+    fontSize: "12px",
   },
-  link: { ...theme.link, color: "inherit" }
+  link: { ...theme.link, color: "inherit" },
 }));
 
-const Header = () => {
+const Header = (props) => {
   const classes = useStyles();
+
+  // base is to check whether to show search bar
+  let location = useLocation().pathname;
+  let base = location ? location.split("/")[1] : null;
+
+  const guestMenu = (
+    <Button variant="outlined" color="inherit" className={classes.signInButton}>
+      <Link to="/login" className={classes.link}>
+        Sign In
+      </Link>
+    </Button>
+  );
+
+  const userMenu = (
+    <React.Fragment>
+      <IconButton className={classes.iconButton}>
+        <ShoppingCartIcon />
+      </IconButton>
+      <IconButton color="inherit">
+        <Link
+          to="/profile"
+          style={{
+            height: "24px",
+            padding: "0",
+            margin: "0",
+            color: "white",
+            textDecoration: "none",
+          }}
+        >
+          <AccountCircleIcon />
+        </Link>
+      </IconButton>
+    </React.Fragment>
+  );
 
   return (
     <React.Fragment>
-      <AppBar position="static" style={{ background: mainGradient }}>
+      <AppBar position="static" className={classes.root}>
         <Toolbar>
           <SidebarMenu />
           <Link to="/" className={classes.logoIcon}>
             <img src={logo} alt="logo" />
           </Link>
           <Typography className={classes.title}></Typography>
-          <Button
-            variant="outlined"
-            color="inherit"
-            className={classes.signInButton}
-          >
-            <Link to="/login" className={classes.link}>
-              Sign In
-            </Link>
-          </Button>
-          <IconButton className={classes.iconButton}>
-            <ShoppingCartIcon />
-          </IconButton>
+          {props.isLoading ? (
+            <CircularProgress color="secondary" />
+          ) : props.user ? (
+            userMenu
+          ) : (
+            guestMenu
+          )}
         </Toolbar>
       </AppBar>
-      <AppBar position="static" style={{ background: mainGradient }}>
-        <SearchBar />
-      </AppBar>
+      {base === "profile" ? null : (
+        <AppBar position="static" className={classes.root}>
+          <SearchBar />
+        </AppBar>
+      )}
     </React.Fragment>
   );
 };
 
 Header.propTypes = {
   user: PropTypes.object,
-  logout: PropTypes.func.isRequired
+  logout: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   isLoading: state.authReducer.isLoading,
-  user: state.authReducer.user
+  user: state.authReducer.user,
 });
 
 export default connect(mapStateToProps, { logout })(Header);

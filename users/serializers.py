@@ -10,7 +10,8 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
         # fields = "__all__"
-        fields = ('id', 'email', 'first_name', 'last_name', 'avatar')
+        fields = ('id', 'email', 'first_name',
+                  'last_name', 'avatar', 'description', 'phone_number')
         # note: fields all and exclude cannot be set together
 
 
@@ -18,7 +19,8 @@ class UpdateUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
         # fields = "__all__"
-        fields = ('first_name', 'last_name', 'avatar')
+        fields = ('first_name', 'last_name', 'avatar',
+                  'description', 'phone_number')
         # note: fields all and exclude cannot be set together
 
     # def update(self, instance, validated_data):

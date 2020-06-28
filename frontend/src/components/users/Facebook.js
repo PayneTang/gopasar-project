@@ -6,8 +6,8 @@ import { connect } from "react-redux";
 import { socialLogin } from "../../actions/auth";
 import Typography from "@material-ui/core/Typography";
 
-const Facebook = props => {
-  const responseFacebook = response => {
+const Facebook = (props) => {
+  const responseFacebook = (response) => {
     const { email, first_name, last_name } = response;
     props.socialLogin({ email, first_name, last_name, method: "fb_login" });
   };
@@ -20,7 +20,7 @@ const Facebook = props => {
         autoLoad={false}
         fields="first_name,last_name,email,picture"
         callback={responseFacebook}
-        render={renderProps => (
+        render={(renderProps) => (
           <Button
             fullWidth
             variant="contained"
